@@ -34,7 +34,7 @@ with col2:
     fine_agg = st.slider("Fine Aggregate (kg/m³)", 590.0, 1000.0, 770.0)
     age = st.slider("Curing Age (Days)", 1, 365, 28, help="Hydration duration curves strength.")
 
-# 4. Process Inputs and Run Prediction
+# 4. Process Inputs and Run Prediction for Selected Day
 input_df = pd.DataFrame(
     [[cement, slag, fly_ash, water, superplasticizer, coarse_agg, fine_agg, age]],
     columns=['Cement', 'Blast Furnace Slag', 'Fly Ash', 'Water', 
@@ -43,39 +43,55 @@ input_df = pd.DataFrame(
 
 st.markdown("---")
 
-# Make Prediction
-prediction = model.predict(input_df)[0]
-st.metric(label="Predicted Compressive Strength", value=f"{prediction:.2f} MPa")
+# Make Single Day Prediction
+prediction = model.predict(input_df)
 
-# 5. NEW: Add Visual Charts & Graphs Section
-st.markdown("### 📊 Mix Proportion & Analytical Insights")
+# Display result inside columns to look tidy
+res_col1, res_col2 = st.columns([1, 2])
+with res_col1:
+    st.metric(label=f"Predicted Strength at Day {age}", value=f"{prediction[0]:.2f} MPa")
+
+# 5. NEW FEATURE: Generate full 365-day strength curve data
+days_to_predict = [1, 3, 7, 14, 28, 56, 90, 180, 270, 365]
+curve_mixes = []
+
+for day in days_to_predict:
+    curve_mixes.append([cement, slag, fly_ash, water, superplasticizer, coarse_agg, fine_agg, day])
+
+curve_df = pd.DataFrame(
+    curve_mixes, 
+    columns=['Cement', 'Blast Furnace Slag', 'Fly Ash', 'Water', 
+             'Superplasticizer', 'Coarse Aggregate', 'Fine Aggregate', 'Age (day)']
+)
+
+# Run model predictions across the timeline matrix
+predicted_curve = model.predict(curve_df)
+
+# Map into a clean timeline dataframe for graphing
+timeline_data = pd.DataFrame({
+    'Curing Age (Days)': days_to_predict,
+    'Strength (MPa)': predicted_curve
+}).set_index('Curing Age (Days)')
+
+
+# 6. Display Interactive Panels
+st.markdown("### 📊 Mix Composition & Dynamic Curing Timeline")
 
 chart_col1, chart_col2 = st.columns(2)
 
 with chart_col1:
     st.write("**Your Material Composition (kg/m³)**")
-    # Prepare data for a clean compositional bar chart
     recipe_data = pd.DataFrame({
         'Ingredients': ['Cement', 'Slag', 'Fly Ash', 'Water', 'Superplasticizer', 'Coarse Agg', 'Fine Agg'],
         'Mass (kg)': [cement, slag, fly_ash, water, superplasticizer, coarse_agg, fine_agg]
     }).set_index('Ingredients')
-    
     st.bar_chart(recipe_data, color="#2b5c8f")
 
 with chart_col2:
-    st.write("**Model Accuracy Metric (Benchmark Context)**")
-    # Generate mock validation points centered around a 0.88 R² trend line for visual context
-    np.random.seed(42)
-    actuals = np.linspace(10, 80, 50)
-    predictions = actuals + np.random.normal(0, 3.75, 50) # Using your exact 3.75 MAE as the error bounds
-    
-    scatter_data = pd.DataFrame({
-        'Actual Strength (MPa)': actuals,
-        'Predicted Strength (MPa)': predictions
-    })
-    
-    st.scatter_chart(scatter_data, x='Actual Strength (MPa)', y='Predicted Strength (MPa)', color="#e26d5c")
-    st.caption("Context: Dots tightly grouped near the diagonal illustrate the model's 88.4% R² tracking accuracy.")
+    st.write("**📈 Predicted Compressive Strength Growth Curve (1 to 365 Days)**")
+    # Plot the full line graph mapping the hardening timeline
+    st.line_chart(timeline_data, color="#e26d5c")
+    st.caption("Insight: Move the sliders on the left to see how changes to the ingredients alter the speed and peak of the curing curve timeline.")
 
-# 6. Call to Action Footer
+# 7. Call to Action Footer
 st.markdown("---\n **Using this for your project?** Support this research by leaving a ⭐ Star on the [GitHub Repository](https://github.com)!")
