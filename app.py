@@ -29,3 +29,4 @@ input_data = pd.DataFrame(
 if st.button("Predict Strength"):
     prediction = model.predict(input_data)[0]
     st.success(f"Predicted Compressive Strength: {prediction:.2f} MPa")
+st.markdown("---\n🎓 **Using this for your final-year project?** Support this research by leaving a ⭐ Star on the [GitHub Repository](https://github.com)!")
