@@ -45,7 +45,7 @@ st.markdown("---")
 
 # Make Prediction
 prediction = model.predict(input_df)[0]
-st.metric(label="💪 Predicted Compressive Strength", value=f"{prediction:.2f} MPa")
+st.metric(label="Predicted Compressive Strength", value=f"{prediction:.2f} MPa")
 
 # 5. NEW: Add Visual Charts & Graphs Section
 st.markdown("### 📊 Mix Proportion & Analytical Insights")
@@ -53,7 +53,7 @@ st.markdown("### 📊 Mix Proportion & Analytical Insights")
 chart_col1, chart_col2 = st.columns(2)
 
 with chart_col1:
-    st.write("**Your Custom Recipe Composition (kg/m³)**")
+    st.write("**Your Material Composition (kg/m³)**")
     # Prepare data for a clean compositional bar chart
     recipe_data = pd.DataFrame({
         'Ingredients': ['Cement', 'Slag', 'Fly Ash', 'Water', 'Superplasticizer', 'Coarse Agg', 'Fine Agg'],
