@@ -1,5 +1,7 @@
 # Predicting Concrete Compressive Strength Using Ensemble Machine Learning
-🔗 **Live Interactive Web App:** [Click here to use the app](https://concrete-strength-prediction-fi54cjzbsfq2djjddqqgi6.streamlit.app/)
+**Live Interactive Web App:** [Click here to use the app](https://concrete-strength-prediction-fi54cjzbsfq2djjddqqgi6.streamlit.app/)
+**Watch the 3-Minute Project Presentation:** [Click here to watch on YouTube](YOUR_YOUTUBE_LINK_HERE)
+
 
 ## 📝 Abstract
 In civil engineering, determining the compressive strength of concrete traditionally requires preparing mix samples and waiting for a destructive 28-day laboratory curing test. This project develops an end-to-end Machine Learning pipeline utilizing an ensemble method (Random Forest Regressor) to predict concrete compressive strength instantly based on its raw mix design ingredients and curing age. Using a historical dataset of 1,030 concrete formulations, the predictive model acts as an automated tool to optimize mix proportions and eliminate labor-intensive waiting periods.
