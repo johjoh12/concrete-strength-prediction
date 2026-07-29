@@ -4,7 +4,7 @@ import numpy as np
 import joblib
 
 # 1. Page Configuration
-st.set_page_config(page_title="Concrete Strength Predictor", page_icon="🏗️", layout="wide")
+st.set_page_config(page_title="Concrete Strength Predictor", layout="wide")
 
 # 2. Load the Pre-trained Model Safely
 @st.cache_resource
@@ -14,7 +14,7 @@ def load_model():
 model = load_model()
 
 # 3. App Title & Structure
-st.title("🏗️ Concrete Compressive Strength Predictor")
+st.title("Concrete Compressive Strength Predictor")
 st.write("Adjust the mix ingredients and curing age below to compute instant structural engineering estimates.")
 
 # --- INJECTED LAB SCALER CONTROLLER IN THE SIDEBAR PANEL ---
@@ -63,7 +63,7 @@ with res_col1:
 
 with res_col2:
     # Display the small lab scale weights right beside your metric card
-    st.markdown(f"##### ⚖️ Required Batch Material Weights for **{batch_liters:.0f} Liters**:")
+    st.markdown(f"##### Required Batch Material Weights for **{batch_liters:.0f} Liters**:")
     st.markdown(f"* **Cement:** `{cement * vol_m3:.3f} kg` ({cement * vol_m3 * 1000:.0f} grams)")
     st.markdown(f"* **Water:** `{water * vol_m3:.3f} Liters` ({water * vol_m3 * 1000:.0f} mL)")
     st.markdown(f"* **Coarse Aggregate:** `{coarse_agg * vol_m3:.2f} kg`")
@@ -94,7 +94,7 @@ timeline_data = pd.DataFrame({
 
 
 # 6. Display Interactive Layout Panels
-st.markdown("### 📊 Mix Composition & Dynamic Curing Timeline")
+st.markdown("### Mix Composition & Dynamic Curing Timeline")
 
 chart_col1, chart_col2 = st.columns(2)
 
@@ -107,13 +107,13 @@ with chart_col1:
     st.bar_chart(recipe_data, color="#2b5c8f")
 
 with chart_col2:
-    st.write("**📈 Predicted Compressive Strength Growth Curve (1 to 365 Days)**")
+    st.write("** Predicted Compressive Strength Growth Curve (1 to 365 Days)**")
     st.line_chart(timeline_data, color="#e26d5c")
     st.caption("Insight: Move the sliders on the left to see how changes to the ingredients alter the speed and peak of the curing curve timeline.")
 
 # 7. Model Validation Sub-Section (Stacked Below)
 st.markdown("---")
-st.markdown("### 🔬 Model Integrity & Mathematical Validation")
+st.markdown("### Model Integrity & Mathematical Validation")
 
 # Generate validation points centered around a 0.88 R² trend line for research context
 np.random.seed(42)
