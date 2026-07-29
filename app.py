@@ -17,6 +17,14 @@ model = load_model()
 st.title("🏗️ Concrete Compressive Strength Predictor")
 st.write("Adjust the mix ingredients and curing age below to compute instant structural engineering estimates.")
 
+# --- INJECTED LAB SCALER CONTROLLER IN THE SIDEBAR PANEL ---
+st.sidebar.header("🔬 Laboratory Scale Converter")
+st.sidebar.write("Input your laboratory mixing pan volume to automatically calculate your required batch masses:")
+batch_liters = st.sidebar.number_input("Target Batch Volume (Liters):", min_value=1.0, max_value=500.0, value=10.0, step=1.0)
+st.sidebar.caption("This tool scales the standard 1 m³ density parameters down to match your small lab scale proportions.")
+vol_m3 = batch_liters / 1000.0
+# -----------------------------------------------------------
+
 # Organize the inputs into clean columns
 col1, col2 = st.columns(2)
 
@@ -46,8 +54,20 @@ st.markdown("---")
 # Make Single Day Prediction
 prediction = model.predict(input_df)[0]
 
-# Display result inside a clean metric card
-st.metric(label=f"Predicted Strength at Day {age}", value=f"{prediction:.2f} MPa")
+# --- MODIFIED FOR CLEAN SIDE-BY-SIDE PRESENTATION OF RESULTS ---
+res_col1, res_col2 = st.columns(2)
+
+with res_col1:
+    # Display result inside your original metric card layout
+    st.metric(label=f"Predicted Strength at Day {age}", value=f"{prediction:.2f} MPa")
+
+with res_col2:
+    # Display the small lab scale weights right beside your metric card
+    st.markdown(f"##### ⚖️ Required Batch Material Weights for **{batch_liters:.0f} Liters**:")
+    st.markdown(f"* **Cement:** `{cement * vol_m3:.3f} kg` ({cement * vol_m3 * 1000:.0f} grams)")
+    st.markdown(f"* **Water:** `{water * vol_m3:.3f} Liters` ({water * vol_m3 * 1000:.0f} mL)")
+    st.markdown(f"* **Coarse Aggregate:** `{coarse_agg * vol_m3:.2f} kg` | **Fine Aggregate:** `{fine_agg * vol_m3:.2f} kg`")
+# ---------------------------------------------------------------
 
 # 5. Generate full 365-day strength curve data
 days_to_predict = list(range(1, 366))
