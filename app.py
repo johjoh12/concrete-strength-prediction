@@ -44,7 +44,7 @@ input_df = pd.DataFrame(
 st.markdown("---")
 
 # Make Single Day Prediction
-prediction = model.predict(input_df)
+prediction = model.predict(input_df)[0]
 
 # Display result inside a clean metric card
 st.metric(label=f"Predicted Strength at Day {age}", value=f"{prediction:.2f} MPa")
