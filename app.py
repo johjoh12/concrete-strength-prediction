@@ -66,7 +66,8 @@ with res_col2:
     st.markdown(f"##### ⚖️ Required Batch Material Weights for **{batch_liters:.0f} Liters**:")
     st.markdown(f"* **Cement:** `{cement * vol_m3:.3f} kg` ({cement * vol_m3 * 1000:.0f} grams)")
     st.markdown(f"* **Water:** `{water * vol_m3:.3f} Liters` ({water * vol_m3 * 1000:.0f} mL)")
-    st.markdown(f"* **Coarse Aggregate:** `{coarse_agg * vol_m3:.2f} kg` | **Fine Aggregate:** `{fine_agg * vol_m3:.2f} kg`")
+    st.markdown(f"* **Coarse Aggregate:** `{coarse_agg * vol_m3:.2f} kg`")
+    st.markdown(f"* **Fine Aggregate:** `{fine_agg * vol_m3:.2f} kg`")
 # ---------------------------------------------------------------
 
 # 5. Generate full 365-day strength curve data
